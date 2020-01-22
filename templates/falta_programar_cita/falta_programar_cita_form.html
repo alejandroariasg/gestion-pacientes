@@ -1,0 +1,138 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  
+   	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Número de documento</label>
+	  <div class="col-lg-5">
+	  	<input type="text" class="form-control" placeholder="Número de documento" name="numero_documento">
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Nombre</label>
+	  <div class="col-lg-5">
+	  	<input type="text" class="form-control" placeholder="Nombre" name="nombre">
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Primer Apellido</label>
+	  <div class="col-lg-5">
+	  	<select class="form-control" name="primer_apellido">
+	        <option>1</option>
+	        <option>2</option>
+	        <option>3</option>
+	        <option>4</option>
+	        <option>5</option>
+      	</select>
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Segundo Apellido</label>
+	  <div class="col-lg-5">
+	  	<select class="form-control" name="segundo_apellido">
+	        <option>1</option>
+	        <option>2</option>
+	        <option>3</option>
+	        <option>4</option>
+	        <option>5</option>
+      	</select>
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">DX</label>
+	  <div class="col-lg-5">
+	  	<select class="form-control" name="segundo_apellido">
+	        <option>TB</option>
+	        <option>EZ</option>
+	        <option>DM</option>
+	        <option>DX</option>
+	        <option>CR</option>
+      	</select>
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Teléfono</label>
+	  <div class="col-lg-5">
+	  	<input type="text" class="form-control" placeholder="Teléfono" name="telefono">
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Lugar de residencia</label>
+	  <div class="col-lg-5">
+	  	<input type="text" class="form-control" placeholder="Lugar de residencia" name="lugar_residencia">
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Observaciones</label>
+	  <div class="col-lg-5">
+	  	<textarea class="form-control" name="observaciones" rows="3"></textarea>
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Fecha cita</label>
+	  <div class="col-lg-5">
+	  	<input type="date" class="form-control" placeholder="Fecha cita" name="fecha_hora">
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Psiquiatra</label>
+	  <div class="col-lg-5">
+	  	<select class="form-control" name="psiquiatra">
+	        <option>1</option>
+	        <option>2</option>
+	        <option>3</option>
+	        <option>4</option>
+	        <option>5</option>
+      	</select>
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Fecha creación</label>
+	  <div class="col-lg-5">
+	  	<input type="date" class="form-control" name="fecha_creacion">
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Fecha actualización</label>
+	  <div class="col-lg-5">
+	  	<input type="date" class="form-control" name="fecha_actualizacion">
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Día</label>
+	  <div class="col-lg-5">
+	  	<input type="date" class="form-control" name="dia">
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Sexo</label>
+	  <div class="col-lg-5">
+	  	<select class="form-control" name="sexo">
+	        <option>M</option>
+	        <option>F</option>
+      	</select>
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Edad</label>
+	  <div class="col-lg-5">
+	  	<input type="number" class="form-control" name="edad">
+	  </div>
+	</div>
+	<div class="form-group">
+	  <label class="col-form-label col-lg-2" for="inputDefault">Estado</label>
+	  <div class="col-lg-5">
+	  	<input type="number" class="form-control" name="estado">
+	  </div>
+	</div>
+
+	<div class="form-group">
+	  <div class="col-lg-5">
+	  	<button type="submit" class="btn btn-primary">Guardar</button>
+	  </div>
+	</div>  
+</form>
+
+{% endblock %}
