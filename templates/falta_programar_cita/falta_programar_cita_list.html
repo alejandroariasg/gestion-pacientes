@@ -1,5 +1,70 @@
 {% extends 'base/base.html' %}
 
 {% block content%}
-    <h3>Listado de citas</h3>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Número de documento</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Primer apellido</th>
+        <th scope="col">Segundo apellido</th>
+        <th scope="col">DX</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">Lugar de residencia</th>
+        <th scope="col">Observaciones</th>
+        <th scope="col">Fecha cita</th>
+        <th scope="col">Psiquiatra</th>
+        <th scope="col">Sexo</th>
+        <th scope="col">Edad</th>
+        <th scope="col">dia</th>
+        <th scope="col">Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% if object_list %}
+		{% for citas in object_list %}
+        <tr>
+            <td>{{ citas.id }}</td>
+            <td>{{ citas.numero_documento }}</td>
+            <td>{{ citas.nombre }}</td>
+            <td>{{ citas.primer_apellido }}</td>
+            <td>{{ citas.segundo_apellido }}</td>
+            <td>{{ citas.dx }}</td>
+            <td>{{ citas.telefono }}</td>
+            <td>{{ citas.lugar_residencia }}</td>
+            <td>{{ citas.observaciones }}</td>
+            <td>{{ citas.fecha_hora }}</td>
+            <td>{{ citas.psiquiatra }}</td>
+            <td>{{ citas.sexo }}</td>
+            <td>{{ citas.edad }}</td>
+            <td>{{ citas.dia }}</td>
+            <td>
+                <a class="btn btn-success" href="">Agander</a>
+                <a class="btn btn-info" href="">Editar</a>
+                <a class="btn btn-danger" href="">Descartar</a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+		<h1>No hay registros de mascotas</h1>
+
+		{% endif %}
+    </tbody>
+  </table> 
+  <div>
+    <ul class="pagination pagination-lg">
+      <li class="page-item">
+        {% if page_obj.has_previous %}
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+      </li>
+
+      <li class="page-item">
+        {% if page_obj.has_next %}
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+      </li>
+    </ul>
+  </div>
 {% endblock %}
