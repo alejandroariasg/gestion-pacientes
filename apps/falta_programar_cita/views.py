@@ -10,7 +10,17 @@ class FaltaProgramarCitaListar(ListView):
     paginate_by = 2
 
 class FaltaProgramarCitaCreate(CreateView):
-	model = FaltaProgramarCita
-	form_class = FaltaProgramarCitaForm
-	template_name = 'falta_programar_cita/falta_programar_cita_form.html'
-	success_url = reverse_lazy('falta_programar_cita:falta_programar_cita_listar')
+	
+	def get(self, request, *args, **kwargs):
+		context = {'form': FaltaProgramarCitaForm()}
+		return render(request, 'falta_programar_cita/falta_programar_cita_form.html', context)
+	
+	def post(self, request, *args, **kwargs):
+		form = FaltaProgramarCitaForm(request.POST)
+		print('CREANDO REGISTRO...')
+		print(form['fecha_actualizacion'])
+		if form.is_valid():
+			cita = form.save()
+			cita.save()
+			return HttpResponseRedirect(reverse_lazy('falta_programar_cita:falta_programar_cita_listar'))
+		return render(request, 'falta_programar_cita/falta_programar_cita_form.html', {'form': form})

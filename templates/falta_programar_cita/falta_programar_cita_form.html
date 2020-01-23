@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
-
+{% load static %}
 {% block content %}
-<form method="post">
+<form method="post" id="form_cita">
   {% csrf_token %}
   	<div class="row">
 		<div class="form-group col">
@@ -22,11 +22,7 @@
 			<label class="col-form-label col-lg-5" for="inputDefault">Primer Apellido</label>
 			<div class="col-lg-12">
 				<select class="form-control" name="primer_apellido">
-					<option>1</option>
-					<option>2</option>
-					<option>3</option>
-					<option>4</option>
-					<option>5</option>
+					{% include 'base/lista_apellidos.html' %}
 				</select>
 			</div>
 		</div>
@@ -34,11 +30,7 @@
 			<label class="col-form-label col-lg-5" for="inputDefault">Segundo Apellido</label>
 			<div class="col-lg-12">
 				<select class="form-control" name="segundo_apellido">
-					<option>1</option>
-					<option>2</option>
-					<option>3</option>
-					<option>4</option>
-					<option>5</option>
+					{% include 'base/lista_apellidos.html' %}
 				</select>
 			</div>
 		</div>
@@ -47,7 +39,7 @@
 		<div class="form-group col">
 			<label class="col-form-label col-lg-2" for="inputDefault">DX</label>
 			<div class="col-lg-12">
-				<select class="form-control" name="segundo_apellido">
+				<select class="form-control" name="dx">
 					<option>TB</option>
 					<option>EZ</option>
 					<option>DM</option>
@@ -65,23 +57,9 @@
 	</div>
 	<div class="row">
 		<div class="form-group col">
-			<label class="col-form-label col-lg-5" for="inputDefault">Lugar de residencia</label>
+			<label class="col-form-label col-lg-12" for="inputDefault">Lugar de residencia</label>
 			<div class="col-lg-12">
 				<input type="text" class="form-control" placeholder="Lugar de residencia" name="lugar_residencia">
-			</div>
-		</div>
-		<div class="form-group col">
-		<label class="col-form-label col-lg-2" for="inputDefault">Observaciones</label>
-		<div class="col-lg-12">
-			<textarea class="form-control" name="observaciones" rows="3"></textarea>
-		</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="form-group col">
-			<label class="col-form-label col-lg-2" for="inputDefault">Fecha cita</label>
-			<div class="col-lg-12">
-				<input type="date" class="form-control" placeholder="Fecha cita" name="fecha_hora">
 			</div>
 		</div>
 		<div class="form-group col">
@@ -96,50 +74,45 @@
 				</select>
 			</div>
 		</div>
-	</div>
-	<div class="row">
 		<div class="form-group col">
-			<label class="col-form-label col-lg-5" for="inputDefault">Fecha creación</label>
+			<label class="col-form-label col-lg-5" for="inputDefault">Fecha cita</label>
 			<div class="col-lg-12">
-				<input type="date" class="form-control" name="fecha_creacion">
-			</div>
-		</div>
-		<div class="form-group col">
-			<label class="col-form-label col-lg-5" for="inputDefault">Fecha actualización</label>
-			<div class="col-lg-12">
-				<input type="date" class="form-control" name="fecha_actualizacion">
+				<input type="date" class="form-control" name="fecha_hora">
 			</div>
 		</div>
 		<div class="form-group col">
 			<label class="col-form-label col-lg-2" for="inputDefault">Día</label>
 			<div class="col-lg-12">
-				<input type="date" class="form-control" name="dia">
+				<input type="text" class="form-control" name="dia">
+			</div>
+		</div>
+		
+	</div>
+	<div class="row">
+		
+		<div class="form-group col">
+			<label class="col-form-label col-lg-2" for="inputDefault">Sexo</label>
+			<div class="col-lg-12">
+				<select class="form-control" name="sexo">
+					<option>M</option>
+					<option>F</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group col">
+			<label class="col-form-label col-lg-2" for="inputDefault">Edad</label>
+			<div class="col-lg-12">
+				<input type="number" class="form-control" name="edad">
+			</div>
+		</div>
+		<div class="form-group col">
+			<label class="col-form-label col-lg-2" for="inputDefault">Observaciones</label>
+			<div class="col-lg-12">
+				<textarea class="form-control" name="observaciones" rows="3"></textarea>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="form-group col">
-		<label class="col-form-label col-lg-2" for="inputDefault">Sexo</label>
-		<div class="col-lg-12">
-			<select class="form-control" name="sexo">
-				<option>M</option>
-				<option>F</option>
-			</select>
-		</div>
-		</div>
-		<div class="form-group col">
-		<label class="col-form-label col-lg-2" for="inputDefault">Edad</label>
-		<div class="col-lg-12">
-			<input type="number" class="form-control" name="edad">
-		</div>
-		</div>
-		<div class="form-group col">
-		<label class="col-form-label col-lg-2" for="inputDefault">Estado</label>
-		<div class="col-lg-12">
-			<input type="number" class="form-control" name="estado">
-		</div>
-		</div>
-	</div>
+	
 	<div class="form-group">
 	  <div class="col-lg-5">
 	  	<button type="submit" class="btn btn-success">Guardar</button>
@@ -147,4 +120,9 @@
 	</div>  
 </form>
 
+{% endblock %}
+
+
+{% block extrajs %}
+	<script type="text/javascript" src="{% static 'js/falta_programar_cita.js' %}"></script>
 {% endblock %}
