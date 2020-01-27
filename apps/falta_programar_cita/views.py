@@ -31,14 +31,13 @@ def FaltaProgramarCitaCreate(request):
 
 def FaltaProgramarCitaListarPaciente(request):
 	if request.method == 'GET':
-		data = {
+		"""data = {
 			'data' : serializers.serialize('json', FaltaProgramarCita.objects.filter(id=request.GET['id']))
+		}"""
+		data = {
+			'data' : serializers.serialize('json', FaltaProgramarCita.objects.raw('SELECT * FROM falta_programar_cita_faltaprogramarcita WHERE id = '+request.GET['id']))
 		}
 		#return HttpResponse(json.dumps(paciente), content_type='application/json')
 		return JsonResponse(data)
 	else:
 		return HttpResponse("GET!")
-	
-	"""id_paciente = request.GET.get('id', None)
-	paciente = FaltaProgramarCita.objects.filter(id=id_paciente)
-	return HttpResponse(json.dumps(paciente), content_type='application/json')"""
