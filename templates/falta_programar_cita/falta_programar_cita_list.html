@@ -4,6 +4,8 @@
 	<link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content%}
+
+
 <table class="table table-hover" id="tabla_falta_programar_cita">
     <thead>
       <tr>
@@ -43,9 +45,9 @@
             <td>{{ citas.edad }}</td>
             <td>{{ citas.dia }}</td>
             <td>
-                <a class="btn btn-success" href="">Agander</a>
-                <a class="btn btn-info" href="">Editar</a>
-                <a class="btn btn-danger" href="">Descartar</a>
+                <button type='button' class='btn btn-success agendar' id="{{ citas.id }}">Agendar</button>
+                <a class="btn btn-info editar editar" id="{{ citas.id }}" href="">Editar</a>
+                <a class="btn btn-danger descartar" id="{{ citas.id }}" href="">Descartar</a>
             </td>
         </tr>
         {% endfor %}
@@ -70,9 +72,109 @@
       </li>
     </ul>
   </div>
+<!-- Modall Agenedar Cita Consulta Externa-->
+<div class="modal fade" id="modalAngendar">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Angedar Cita</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <h3>Angendar</h3>
+        <section id="form">
+          <div class="container ">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <div class="row">
+                  <div class="col-md-12">
+                    <form id="form-angedar">
+                        <div class="form-row">
+                          <div class="form-group col-md-4">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" placeholder="Nombre" id="agenda-nombre" name="agenda-nombre" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Primer apellido</label>
+                            <input type="text" class="form-control" id="agenda-prim-apellido"  name="agenda-prim-apellido" placeholder="Primer Apellido" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Segundo apellido</label>
+                            <input type="text" class="form-control" placeholder="Segundo Apellido" id="agenda-seg-apellido" name="agenda-seg-apellido" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Cédula</label>
+                            <input type="text" class="form-control" placeholder="Cédula" id="agenda-numero-documento" disabled>
+                          </div>
+                          <div class="form-group col-md-4 ">
+                            <label>Teléfono</label>
+                            <input type="text" class="form-control" placeholder="Teléfono" id="agenda-telefono" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>DX</label>
+                            <select class="form-control selectBox" name="agenda-dx" id="agenda-dx" tabindex="5">
+                              <option>Diagnóstico</option>
+                              <option>TB</option>
+                              <option>EZ</option>
+                              <option>DM</option>
+                              <option>CR</option>
+                            </select>
+                          </div>  
+
+                          <div class="form-group col-md-4">
+                            <label>Fecha agenda</label>
+                            <input type="date" class="form-control" id="agenda-fecha" name="agenda-fecha" placeholder="Fecha">
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Hora agenda</label>
+                            <input type="time" class="form-control" id="agenda-hora" name="agenda-hora"  placeholder="Hora">
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label>Día</label>
+                              <input type="text" class="form-control" id="agenda-dia" name="agenda-dia"  placeholder="Día cita agenda" disabled="disabled"> 
+                          </div>
+
+                          <div class="form-group col-md-6">
+                              <label>Persona que evalúa</label>
+                              <select class="form-control" id="agenda-persona-evalua"  name="agenda-persona-evalua">
+                                <option>Seleccione...</option>
+                                <option>Juanita</option>
+                                <option>Luis G</option>
+                                <option>Sergio</option>
+                                <option>Roby</option>
+                                <option>Por definir...</option>
+                            </select>
+                          </div>                        
+                          <div class="form-group col-md-4" hidden>
+                            <input type="number" class="form-control" id="agenda-paciente-id" name="agenda-paciente-id">
+                            <input type="number" class="form-control" id="agenda-index-row" name="agenda-index-row">
+                            <input type="text" class="form-control" id="agenda-procedencia" name="agenda-procedencia" value="CONSULTA EXTERNA">
+                          </div>                        
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="agendar">Agendar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block extrajs %}
-	
 	<script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/falta_programar_cita_list.js' %}"></script>
+
 {% endblock %}

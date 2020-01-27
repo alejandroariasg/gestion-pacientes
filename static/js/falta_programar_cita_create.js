@@ -1,6 +1,6 @@
 $(document).ready(function(){
+	cambiarDia();	
 	
-	cambiarDia();
 	
 	function cambiarDia(){
 		$( "#fecha_hora" ).focusout(function() {
