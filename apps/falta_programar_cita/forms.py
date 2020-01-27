@@ -4,7 +4,7 @@ from apps.falta_programar_cita.models import FaltaProgramarCita
 class FaltaProgramarCitaForm(forms.ModelForm):
 	class Meta:
 		model = FaltaProgramarCita
-
+		ordering = ['-id']
 		fields = [
 			'numero_documento',
 			'nombre',
