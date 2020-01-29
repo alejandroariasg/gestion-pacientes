@@ -6,6 +6,7 @@ from django.views.generic import ListView
 from apps.falta_programar_cita.forms import FaltaProgramarCitaForm, AgendaForm
 from django.urls import reverse_lazy
 import json
+from datetime import date, datetime
 
 
 # Create your views here.
@@ -40,11 +41,24 @@ def FaltaProgramarCitaListarPaciente(request):
 
 def FaltaProgramarCitaAgendar(request):
 	if request.method == 'POST':
-		id_paciente = request.POST.get('agenda-paciente-id')
+		id_paciente = request.POST.get('id_paciente')
 		prim_apellido = request.POST.get('agenda-prim-apellido')
 		seg_apellido = request.POST.get('agenda-seg-apellido')
-		nombre = ''
+		hermanos = ''
 		#CONSULTA PARA VALIDAR POSIBLES HERMANOS DE ACUERDO A LA COINCIDENCIA DE APELLIDOS
 		for p in FaltaProgramarCita.objects.raw("SELECT id, nombre, primer_apellido, segundo_apellido FROM falta_programar_cita_faltaprogramarcita WHERE id != {} AND primer_apellido = '{}' AND segundo_apellido = '{}' AND primer_apellido != '' and  segundo_apellido != '' ".format(id_paciente, prim_apellido, seg_apellido)):
-			nombre += str('{} {} {} ,'.format(p.nombre, p.primer_apellido, p.segundo_apellido))
-	return HttpResponse(nombre)
+			hermanos += str('{} {} {} ,'.format(p.nombre, p.primer_apellido, p.segundo_apellido))
+		
+		form = AgendaForm(request.POST)
+		if form.is_valid():
+			obj = form.save(commit=True)
+			obj.fecha = request.POST.get('fecha')+' '+request.POST.get('fecha_hora')
+			obj.fecha_actualizacion = date.today()
+			obj.hermamos = hermanos
+			obj.estado = 1
+			obj.id_paciente = FaltaProgramarCita.objects.get(id=id_paciente)
+			obj.save()
+		else:
+			print(form.errors)
+
+	return HttpResponse(request.POST.get('fecha_hora'))

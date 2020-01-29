@@ -76,40 +76,40 @@ $(document).ready(function(){
 		}).then((result) => {
 		  if (result.value) {
 		  	//var index_row = $("#agenda-index-row").val();
-		  	var serializedData = $("#form-angedar").serialize()+ "&agenda-numero-documento=" + $("#agenda-numero-documento").val()+"&agenda-prim-apellido=" + $("#agenda-prim-apellido").val()+"&agenda-seg-apellido=" + $("#agenda-seg-apellido").val()+"&agenda-procedencia=" + $("#agenda-procedencia").val()+"&agenda-dia=" + $("#agenda-dia").val();
-			var request;
-			request = $.ajax({
-				  url: "falta_programar_cita_listar_agendar",
-				  data: serializedData,
-				  type: "POST",
-				  success: function(data){
-				  	if(data != 'error'){
-				  			$("#form-angedar")[0].reset();
-					  		Swal.fire(
-						      'Angendado!',
-						      "Se agendó correctamente el paciente "+nombre+".",
-						      'success'
-						    );
-					  		$('#modalAngendar').modal('toggle');
-					  		/*angedar_paciente();
-					  		editar_paciente();
-					  		descartar_paciente();
-					  		$('#pruebaDataTable').dataTable().fnDestroy();
-		    				listar_citas_consultas_externas();*/
-		    				//updateRow(index_row, JSON.parse(data).data);
-				  	}else{
-				  		Swal.fire(
-					      'Error!',
-					      'Ha ocurrido un error. Verifique que los campos estén correctamente diligenciados',
-					      'error'
-					    );
-				  	}
-				  	
-				  },
-				  error: function(result) {
-                    console.log(result);
-                  }		
-		    	});
+		  	var serializedData = $("#form-angedar").serialize()+ "&numero_documento=" + $("#agenda-numero-documento").val()+"&agenda-prim-apellido=" + $("#agenda-prim-apellido").val()+"&agenda-seg-apellido=" + $("#agenda-seg-apellido").val()+"&procedencia=" + $("#agenda-procedencia").val()+"&dia=" + $("#agenda-dia").val()+"&id_paciente_id=" + $("#agenda-paciente-id").val();
+        var request;
+        request = $.ajax({
+            url: "falta_programar_cita_listar_agendar",
+            data: serializedData,
+            type: "POST",
+            success: function(data){
+              if(data != 'error'){
+                  $("#form-angedar")[0].reset();
+                  Swal.fire(
+                    'Angendado!',
+                    "Se agendó correctamente el paciente "+nombre+".",
+                    'success'
+                  );
+                  $('#modalAngendar').modal('toggle');
+                  /*angedar_paciente();
+                  editar_paciente();
+                  descartar_paciente();
+                  $('#pruebaDataTable').dataTable().fnDestroy();
+                  listar_citas_consultas_externas();*/
+                  //updateRow(index_row, JSON.parse(data).data);
+              }else{
+                Swal.fire(
+                  'Error!',
+                  'Ha ocurrido un error. Verifique que los campos estén correctamente diligenciados',
+                  'error'
+                );
+              }
+              
+            },
+            error: function(result) {
+                      console.log(result);
+                    }		
+            });
 		  }
 		});
 	});

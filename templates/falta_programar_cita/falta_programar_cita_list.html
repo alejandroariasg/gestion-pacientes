@@ -109,7 +109,7 @@
                           </div>
                           <div class="form-group col-md-4">
                             <label>Cédula</label>
-                            <input type="text" class="form-control" placeholder="Cédula" id="agenda-numero-documento" disabled>
+                            <input type="text" class="form-control" placeholder="Cédula" id="agenda-numero-documento" name="numero_documento" disabled>
                           </div>
                           <div class="form-group col-md-4 ">
                             <label>Teléfono</label>
@@ -128,20 +128,20 @@
 
                           <div class="form-group col-md-4">
                             <label>Fecha agenda</label>
-                            <input type="date" class="form-control" id="agenda-fecha" name="agenda-fecha" placeholder="Fecha">
+                            <input type="date" class="form-control" id="agenda-fecha" name="fecha" placeholder="Fecha">
                           </div>
                           <div class="form-group col-md-4">
                             <label>Hora agenda</label>
-                            <input type="time" class="form-control" id="agenda-hora" name="agenda-hora"  placeholder="Hora">
+                            <input type="time" class="form-control" id="agenda-hora" name="fecha_hora"  placeholder="Hora">
                           </div>
                           <div class="form-group col-md-4">
                               <label>Día</label>
-                              <input type="text" class="form-control" id="agenda-dia" name="agenda-dia"  placeholder="Día cita agenda" disabled="disabled"> 
+                              <input type="text" class="form-control" id="agenda-dia" name="dia"  placeholder="Día cita agenda" disabled="disabled"> 
                           </div>
 
                           <div class="form-group col-md-6">
                               <label>Persona que evalúa</label>
-                              <select class="form-control" id="agenda-persona-evalua"  name="agenda-persona-evalua">
+                              <select class="form-control" id="agenda-persona-evalua"  name="persona_evalua">
                                 <option>Seleccione...</option>
                                 <option>Juanita</option>
                                 <option>Luis G</option>
@@ -151,9 +151,9 @@
                             </select>
                           </div>                        
                           <div class="form-group col-md-4" hidden>
-                            <input type="number" class="form-control" id="agenda-paciente-id" name="agenda-paciente-id">
+                            <input type="number" class="form-control" id="agenda-paciente-id" name="id_paciente">
                             <input type="number" class="form-control" id="agenda-index-row" name="agenda-index-row">
-                            <input type="text" class="form-control" id="agenda-procedencia" name="agenda-procedencia" value="CONSULTA EXTERNA">
+                            <input type="text" class="form-control" id="agenda-procedencia" name="procedencia" value="CONSULTA EXTERNA">
                           </div>                        
                     </form>
                   </div>
