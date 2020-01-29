@@ -38,10 +38,13 @@ def FaltaProgramarCitaListarPaciente(request):
 	else:
 		return HttpResponse("ERROR!")
 
-def Agendar(request):
+def FaltaProgramarCitaAgendar(request):
 	if request.method == 'POST':
-		# CONSULTA PARA VALIDAR POSIBLES HERMANOS DE ACUERDO A LA COINCIDENCIA DE APELLIDOS
-		id_paciente = request.GET['id']
-		for p in FaltaProgramarCita.objects.raw("SELECT nombre, primer_apellido, segundo_apellido FROM falta_programar_cita_faltaprogramarcita WHERE id != "+id_paciente+" AND primer_apellido = "+request.GET['primer_apellido']+" AND segundo_apellido = "+request.GET['segundo_apellido']+" AND primer_apellido != '' and  segundo_apellido != '' "):
-			nombre = p.nombre+' '+p.primer_apellido+' '+p.segundo_apellido
-		print(nombre)
+		id_paciente = request.POST.get('agenda-paciente-id')
+		prim_apellido = request.POST.get('agenda-prim-apellido')
+		seg_apellido = request.POST.get('agenda-seg-apellido')
+		nombre = ''
+		#CONSULTA PARA VALIDAR POSIBLES HERMANOS DE ACUERDO A LA COINCIDENCIA DE APELLIDOS
+		for p in FaltaProgramarCita.objects.raw("SELECT id, nombre, primer_apellido, segundo_apellido FROM falta_programar_cita_faltaprogramarcita WHERE id != {} AND primer_apellido = '{}' AND segundo_apellido = '{}' AND primer_apellido != '' and  segundo_apellido != '' ".format(id_paciente, prim_apellido, seg_apellido)):
+			nombre += str('{} {} {} ,'.format(p.nombre, p.primer_apellido, p.segundo_apellido))
+	return HttpResponse(nombre)

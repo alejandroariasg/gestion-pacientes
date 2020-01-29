@@ -4,6 +4,7 @@ $(document).ready(function(){
         
         "fnDrawCallback": function( oSettings ) {
             angedar_paciente();
+            cambiarDia();
         },
         "oLanguage": {
             "sProcessing":     "Cargando...",
@@ -54,4 +55,72 @@ $(document).ready(function(){
           });
         });
     }
+
+    $('#agendar').click(function(){
+		var nombre = $("#agenda-nombre").val()+" "+$("#agenda-prim-apellido").val()+" "+$("#agenda-seg-apellido").val();
+		var fecha = $("#agenda-fecha").val()+" "+$("#agenda-hora").val();
+		var dia =  $("#agenda-dia").val();
+		var medico =  $("#agenda-persona-evalua").val();
+
+		Swal.fire({
+		  title: 'Esta seguro?',
+		  text: "Desea agendar al paciente "+nombre+" para la fecha "+fecha+" día "+dia+" con el médico "+medico,
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonClass: "btn-success",
+		  confirmButtonText: "Si, agendar",
+		  cancelButtonText: "No, cancelar!",
+		  closeOnConfirm: false,
+		  closeOnCancel: false,
+		  reverseButtons: true
+		}).then((result) => {
+		  if (result.value) {
+		  	//var index_row = $("#agenda-index-row").val();
+		  	var serializedData = $("#form-angedar").serialize()+ "&agenda-numero-documento=" + $("#agenda-numero-documento").val()+"&agenda-prim-apellido=" + $("#agenda-prim-apellido").val()+"&agenda-seg-apellido=" + $("#agenda-seg-apellido").val()+"&agenda-procedencia=" + $("#agenda-procedencia").val()+"&agenda-dia=" + $("#agenda-dia").val();
+			var request;
+			request = $.ajax({
+				  url: "falta_programar_cita_listar_agendar",
+				  data: serializedData,
+				  type: "POST",
+				  success: function(data){
+				  	if(data != 'error'){
+				  			$("#form-angedar")[0].reset();
+					  		Swal.fire(
+						      'Angendado!',
+						      "Se agendó correctamente el paciente "+nombre+".",
+						      'success'
+						    );
+					  		$('#modalAngendar').modal('toggle');
+					  		/*angedar_paciente();
+					  		editar_paciente();
+					  		descartar_paciente();
+					  		$('#pruebaDataTable').dataTable().fnDestroy();
+		    				listar_citas_consultas_externas();*/
+		    				//updateRow(index_row, JSON.parse(data).data);
+				  	}else{
+				  		Swal.fire(
+					      'Error!',
+					      'Ha ocurrido un error. Verifique que los campos estén correctamente diligenciados',
+					      'error'
+					    );
+				  	}
+				  	
+				  },
+				  error: function(result) {
+                    console.log(result);
+                  }		
+		    	});
+		  }
+		});
+	});
+
+
+    function cambiarDia(){
+		$( "#agenda-fecha" ).focusout(function() {
+			var dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado","Domingo"];
+			var date = new Date($('#agenda-fecha').val());
+			$('#agenda-dia').val(dias[date.getDay()]);
+		});
+	}
+
 })

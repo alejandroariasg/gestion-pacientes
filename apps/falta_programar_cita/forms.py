@@ -60,46 +60,46 @@ class FaltaProgramarCitaForm(forms.ModelForm):
 			'dia' : forms.TextInput(attrs={'class':'form-control'}),
 			'estado' : forms.TextInput(attrs={'class':'form-control'}),
 		}
-	class AgendaForm(forms.ModelForm):
-		model = Agenda
-		fields = [
-			'numero_documento',
-			'fecha',
-			'dia',
-			'codigo_paisa',
-			'hermanos',
-			'persona_evalua',
-			'fecha_actualizacion',
-			'observaciones',
-			'hospitalizado',
-			'codigo_alternativo',
-			'procedencia',
-			'faltan_datos_red_cap',
-			'estado',
-		]
-		labels = {
-			'numero_documento' : 'Número documento',
-			'fecha' : 'Fecha Cita',
-			'dia' : 'Día cita',
-			'codigo_paisa' : 'Código paisa',
-			'hermanos' : 'Hermanos',
-			'persona_evalua' : 'Persona que evalúa',
-			'observaciones' : 'Observaciones',
-			'hospitalizado': 'Hospitalizado',
-			'codigo_alternativo': 'Código alternatívo',
-			'procedencia' : 'Procedencia',
-			'faltan_datos_red_cap' : 'Faltan campos RedCap',
-		}
-		widgets = {
-			'numero_documento' : forms.TextInput(attrs={'class':'form-control'}),
-			'fecha' : forms.DateTimeInput(attrs={'class':'form-control'}),
-			'dia' : forms.TextInput(attrs={'class':'form-control'}),
-			'codigo_paisa' : forms.TextInput(attrs={'class':'form-control'}),
-			'hermanos' : forms.TextInput(attrs={'class':'form-control'}),
-			'persona_evalua' : forms.TextInput(attrs={'class':'form-control'}),
-			'observaciones' : forms.TextInput(attrs={'class':'form-control'}),
-			'hospitalizado': forms.TextInput(attrs={'class':'form-control'}),
-			'codigo_alternativo': forms.TextInput(attrs={'class':'form-control'}),
-			'procedencia' : forms.TextInput(attrs={'class':'form-control'}),
-			'faltan_datos_red_cap' : forms.TextInput(attrs={'class':'form-control'}),
-		}
+class AgendaForm(forms.ModelForm):
+	model = Agenda
+	fields = [
+		'numero_documento',
+		'fecha',
+		'dia',
+		'codigo_paisa',
+		'hermanos',
+		'persona_evalua',
+		'fecha_actualizacion',
+		'observaciones',
+		'hospitalizado',
+		'codigo_alternativo',
+		'procedencia',
+		'faltan_datos_red_cap',
+		'estado',
+	]
+	labels = {
+		'numero_documento' : 'Número documento',
+		'fecha' : 'Fecha Cita',
+		'dia' : 'Día cita',
+		'codigo_paisa' : 'Código paisa',
+		'hermanos' : 'Hermanos',
+		'persona_evalua' : 'Persona que evalúa',
+		'observaciones' : 'Observaciones',
+		'hospitalizado': 'Hospitalizado',
+		'codigo_alternativo': 'Código alternatívo',
+		'procedencia' : 'Procedencia',
+		'faltan_datos_red_cap' : 'Faltan campos RedCap',
+	}
+	widgets = {
+		'numero_documento' : forms.TextInput(attrs={'class':'form-control'}),
+		'fecha' : forms.DateTimeInput(attrs={'class':'form-control'}),
+		'dia' : forms.TextInput(attrs={'class':'form-control'}),
+		'codigo_paisa' : forms.TextInput(attrs={'class':'form-control'}),
+		'hermanos' : forms.TextInput(attrs={'class':'form-control'}),
+		'persona_evalua' : forms.TextInput(attrs={'class':'form-control'}),
+		'observaciones' : forms.TextInput(attrs={'class':'form-control'}),
+		'hospitalizado': forms.TextInput(attrs={'class':'form-control'}),
+		'codigo_alternativo': forms.TextInput(attrs={'class':'form-control'}),
+		'procedencia' : forms.TextInput(attrs={'class':'form-control'}),
+		'faltan_datos_red_cap' : forms.TextInput(attrs={'class':'form-control'}),
+	}
