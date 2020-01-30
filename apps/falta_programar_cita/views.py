@@ -6,8 +6,9 @@ from django.views.generic import ListView
 from apps.falta_programar_cita.forms import FaltaProgramarCitaForm, AgendaForm
 from django.urls import reverse_lazy
 import json
+from django.db.models import Case, When,  F
 from datetime import date, datetime
-
+from django.utils import timezone
 
 # Create your views here.
 class FaltaProgramarCitaListar(ListView):
@@ -40,25 +41,35 @@ def FaltaProgramarCitaListarPaciente(request):
 		return HttpResponse("ERROR!")
 
 def FaltaProgramarCitaAgendar(request):
-	if request.method == 'POST':
-		id_paciente = request.POST.get('id_paciente')
-		prim_apellido = request.POST.get('agenda-prim-apellido')
-		seg_apellido = request.POST.get('agenda-seg-apellido')
-		hermanos = ''
-		#CONSULTA PARA VALIDAR POSIBLES HERMANOS DE ACUERDO A LA COINCIDENCIA DE APELLIDOS
-		for p in FaltaProgramarCita.objects.raw("SELECT id, nombre, primer_apellido, segundo_apellido FROM falta_programar_cita_faltaprogramarcita WHERE id != {} AND primer_apellido = '{}' AND segundo_apellido = '{}' AND primer_apellido != '' and  segundo_apellido != '' ".format(id_paciente, prim_apellido, seg_apellido)):
-			hermanos += str('{} {} {} ,'.format(p.nombre, p.primer_apellido, p.segundo_apellido))
-		
+	if request.method == 'POST':	
 		form = AgendaForm(request.POST)
 		if form.is_valid():
-			obj = form.save(commit=True)
-			obj.fecha = request.POST.get('fecha')+' '+request.POST.get('fecha_hora')
-			obj.fecha_actualizacion = date.today()
-			obj.hermamos = hermanos
-			obj.estado = 1
-			obj.id_paciente = FaltaProgramarCita.objects.get(id=id_paciente)
-			obj.save()
+				obj = form.save(commit=True)
+				id_paciente = request.POST.get('id_paciente')
+				prim_apellido = request.POST.get('agenda-prim-apellido')
+				seg_apellido = request.POST.get('agenda-seg-apellido')
+				hermanos = ''
+				#CONSULTA PARA VALIDAR POSIBLES HERMANOS DE ACUERDO A LA COINCIDENCIA DE APELLIDOS
+				for p in FaltaProgramarCita.objects.raw("SELECT id, nombre, primer_apellido, segundo_apellido FROM falta_programar_cita_faltaprogramarcita WHERE id != {} AND primer_apellido = '{}' AND segundo_apellido = '{}' AND primer_apellido != '' and  segundo_apellido != '' ".format(id_paciente, prim_apellido, seg_apellido)):
+    					hermanos += str('{} {} {} ,'.format(p.nombre, p.primer_apellido, p.segundo_apellido))
+				
+				obj.fecha = timezone.now()
+				obj.fecha_actualizacion = date.today()
+				obj.hermamos = hermanos
+				obj.estado = 1
+				obj.id_paciente = FaltaProgramarCita.objects.get(id=id_paciente)
+				if(obj.save()):
+							paciente = FaltaProgramarCita.objects.get(id=id_paciente)
+							paciente.estado = Case(
+								When(estado="2", then=Value('1')),
+								When(estado="3", then=Value('1')),
+								default=Value('estado'),
+							)
+							paciente.dx = ('alejo')
+							paciente.update()
+				else:
+    					print('ERROR')
 		else:
 			print(form.errors)
 
-	return HttpResponse(request.POST.get('fecha_hora'))
+	return HttpResponse(request.POST.get('agenda-dx'))
