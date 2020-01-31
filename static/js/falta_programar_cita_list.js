@@ -1,7 +1,9 @@
 $(document).ready(function(){
     var table;
     table = $('#tabla_falta_programar_cita').DataTable({
-        
+          "createdRow": function( row, data, dataIndex ) {
+            $('td', row).eq(14).attr('id', 'estado_'+dataIndex);
+        },
         "fnDrawCallback": function( oSettings ) {
             angedar_paciente();
             cambiarDia();
@@ -34,6 +36,7 @@ $(document).ready(function(){
     function angedar_paciente(){
         $('#tabla_falta_programar_cita tbody').on( 'click', '.agendar', function (){
             id = this.id;
+            var indexRow = table.row( $(this).closest('tr').index())[0][0];
             $.ajax({
                 url: "falta_programar_cita_listar_paciente",
                 type: "GET",
@@ -47,6 +50,7 @@ $(document).ready(function(){
                     $("#agenda-telefono").val(data.telefono);
                     $("#agenda-dx").val(data.dx);
                     $("#agenda-paciente-id").val(id);
+                    $("#agenda-index-row").val(indexRow);
                     $('#modalAngendar').modal('show');	  	
                 },
                 error: function(result) {
@@ -57,61 +61,57 @@ $(document).ready(function(){
     }
 
     $('#agendar').click(function(){
-		var nombre = $("#agenda-nombre").val()+" "+$("#agenda-prim-apellido").val()+" "+$("#agenda-seg-apellido").val();
-		var fecha = $("#agenda-fecha").val()+" "+$("#agenda-hora").val();
-		var dia =  $("#agenda-dia").val();
-		var medico =  $("#agenda-persona-evalua").val();
+      var nombre = $("#agenda-nombre").val()+" "+$("#agenda-prim-apellido").val()+" "+$("#agenda-seg-apellido").val();
+      var fecha = $("#agenda-fecha").val()+" "+$("#agenda-hora").val();
+      var dia =  $("#agenda-dia").val();
+      var medico =  $("#agenda-persona-evalua").val();
 
-		Swal.fire({
-		  title: 'Esta seguro?',
-		  text: "Desea agendar al paciente "+nombre+" para la fecha "+fecha+" día "+dia+" con el médico "+medico,
-		  type: 'warning',
-		  showCancelButton: true,
-		  confirmButtonClass: "btn-success",
-		  confirmButtonText: "Si, agendar",
-		  cancelButtonText: "No, cancelar!",
-		  closeOnConfirm: false,
-		  closeOnCancel: false,
-		  reverseButtons: true
-		}).then((result) => {
-		  if (result.value) {
-		  	//var index_row = $("#agenda-index-row").val();
-		  	var serializedData = $("#form-angedar").serialize()+ "&numero_documento=" + $("#agenda-numero-documento").val()+"&agenda-prim-apellido=" + $("#agenda-prim-apellido").val()+"&agenda-seg-apellido=" + $("#agenda-seg-apellido").val()+"&procedencia=" + $("#agenda-procedencia").val()+"&dia=" + $("#agenda-dia").val()+"&id_paciente_id=" + $("#agenda-paciente-id").val();
-        var request;
-        request = $.ajax({
-            url: "falta_programar_cita_listar_agendar",
-            data: serializedData,
-            type: "POST",
-            success: function(data){
-              if(data != 'error'){
-                  $("#form-angedar")[0].reset();
+      Swal.fire({
+        title: 'Esta seguro?',
+        text: "Desea agendar al paciente "+nombre+" para la fecha "+fecha+" día "+dia+" con el médico "+medico,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        confirmButtonText: "Si, agendar",
+        cancelButtonText: "No, cancelar!",
+        closeOnConfirm: false,
+        closeOnCancel: false,
+        reverseButtons: true
+      }).then((result) => {
+        if (result.value) {
+          var index_row = $("#agenda-index-row").val();
+          var serializedData = $("#form-angedar").serialize()+ "&numero_documento=" + $("#agenda-numero-documento").val()+"&agenda-prim-apellido=" + $("#agenda-prim-apellido").val()+"&agenda-seg-apellido=" + $("#agenda-seg-apellido").val()+"&procedencia=" + $("#agenda-procedencia").val()+"&dia=" + $("#agenda-dia").val()+"&id_paciente_id=" + $("#agenda-paciente-id").val();
+          var request;
+          request = $.ajax({
+              url: "falta_programar_cita_listar_agendar",
+              data: serializedData,
+              type: "POST",
+              success: function(data){
+                console.log(data.estatus);
+                if(data.estatus == 'ok'){
+                    $("#form-angedar")[0].reset();
+                    Swal.fire(
+                      'Angendado!',
+                      "Se agendó correctamente el paciente "+nombre+".",
+                      'success'
+                    );
+                    $('#modalAngendar').modal('toggle');
+                    //location.reload();
+                }else{
                   Swal.fire(
-                    'Angendado!',
-                    "Se agendó correctamente el paciente "+nombre+".",
-                    'success'
+                    'Error!',
+                    'Ha ocurrido un error '+data.estatus,
+                    'error'
                   );
-                  $('#modalAngendar').modal('toggle');
-                  /*angedar_paciente();
-                  editar_paciente();
-                  descartar_paciente();
-                  $('#pruebaDataTable').dataTable().fnDestroy();
-                  listar_citas_consultas_externas();*/
-                  //updateRow(index_row, JSON.parse(data).data);
-              }else{
-                Swal.fire(
-                  'Error!',
-                  'Ha ocurrido un error. Verifique que los campos estén correctamente diligenciados',
-                  'error'
-                );
-              }
-              
-            },
-            error: function(result) {
-                      console.log(result);
-                    }		
-            });
-		  }
-		});
+                }
+                
+              },
+              error: function(result) {
+                        console.log(result);
+                      }		
+              });
+        }
+      });
 	});
 
 

@@ -44,11 +44,18 @@
             <td>{{ citas.sexo }}</td>
             <td>{{ citas.edad }}</td>
             <td>{{ citas.dia }}</td>
-            <td>
+            {% if citas.estado == 1%}
+              <td>
                 <button type='button' class='btn btn-success agendar' id="{{ citas.id }}">Agendar</button>
                 <a class="btn btn-info editar editar" id="{{ citas.id }}" href="">Editar</a>
                 <a class="btn btn-danger descartar" id="{{ citas.id }}" href="">Descartar</a>
+              </td>
+            {% else %}
+            <td style="background-color: aquamarine; text-align: center; font-weight: bold;">
+              <span>Agendado</span style="background-color: aquamarine;">
             </td>
+            {% endif %}
+            
         </tr>
         {% endfor %}
         {% else %}
