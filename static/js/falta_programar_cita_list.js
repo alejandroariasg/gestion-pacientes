@@ -6,6 +6,7 @@ $(document).ready(function(){
         },
         "fnDrawCallback": function( oSettings ) {
             angedar_paciente();
+            editar_paciente();
             cambiarDia();
         },
         "oLanguage": {
@@ -112,10 +113,49 @@ $(document).ready(function(){
               });
         }
       });
-	});
+  });
 
+  function editar_paciente(){
+      $('#tabla_falta_programar_cita tbody').on( 'click', '.editar', function (){
+        id = this.id;
+        var indexRow = table.row( $(this).closest('tr').index())[0][0];
+        $.ajax({
+          url: "falta_programar_cita_listar_paciente",
+          data: {'id' : id},
+          type: "GET",
+          success: function(data){
+            var data_agenda = jQuery.parseJSON(data['data'])[0]['fields'];
+            console.log(data_agenda.fecha_hora);
+            fecha = data_agenda.fecha_hora != null ? data_agenda.fecha_hora.split("T") : '';
 
-    function cambiarDia(){
+            $("#nombre").val(data_agenda.nombre);
+            $("#primer_apellido").val(data_agenda.primer_apellido);
+            $("#segundo_apellido").val(data_agenda.segundo_apellido);
+            $("#numero_documento").val(data_agenda.numero_documento);
+            $("#telefono").val(data_agenda.telefono);
+            $("#dx").val(data_agenda.dx);
+            $("#lugar_residencia").val(data_agenda.lugar_residencia);
+            $("#sexo").val($.trim(data_agenda.sexo));
+            $("#edad").val(data_agenda.edad);
+            $("#observaciones").val(data_agenda.observaciones);
+            $("#fecha_hora").val(fecha[0]);
+            $("#pisquitra").val(data_agenda.psiquiatra);
+            $("#dia").val(data_agenda.dia);
+            $("#update_paciente-id").val(id);
+            $("#update_row_id").val(indexRow);
+
+            //$('.selectpicker').selectpicker('refresh');
+            $('#myModalUpdate').modal('show'); 			  	
+          },
+          error: function(result) {
+            alert("Data not found"+result);
+          }		
+        });
+
+    });
+  }
+
+  function cambiarDia(){
 		$( "#agenda-fecha" ).focusout(function() {
 			var dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado","Domingo"];
 			var date = new Date($('#agenda-fecha').val());

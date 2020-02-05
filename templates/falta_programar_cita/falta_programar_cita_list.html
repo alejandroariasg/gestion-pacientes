@@ -47,7 +47,7 @@
             {% if citas.estado == 1%}
               <td>
                 <button type='button' class='btn btn-success agendar' id="{{ citas.id }}">Agendar</button>
-                <a class="btn btn-info editar editar" id="{{ citas.id }}" href="">Editar</a>
+                <button type='button' class="btn btn-info editar" id="{{ citas.id }}">Editar</button>
                 <a class="btn btn-danger descartar" id="{{ citas.id }}" href="">Descartar</a>
               </td>
             {% else %}
@@ -179,6 +179,153 @@
     </div>
   </div>
 </div>
+
+<!-- Modall Editar Cita Consulta Externa-->
+<div class="modal fade" id="myModalUpdate">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Falta por programar cita</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <h3>Actualziar Cita Consulta Externa</h3>
+        <section id="form">
+          <div class="container ">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <div class="row">
+                  <div class="col-md-12">
+                    <form id="form-editar">
+                        <div class="form-row">
+                          <div class="form-group col-md-4">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Primer Apellido</label>
+                            <select class="form-control selectpicker" id="primer_apellido" name="primer_apellido" data-live-search="true">
+                              {% include 'base/lista_apellidos.html' %}
+                            </select>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Segundo Apellido</label>
+                            <select class="form-control selectpicker" id="segundo_apellido" name="segundo_apellido" data-live-search="true">
+                              {% include 'base/lista_apellidos.html' %}
+                            </select>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Cédula</label>
+                            <input type="text" class="form-control" name="numero_documento" id="numero_documento" placeholder="Cédula">
+                          </div>
+                          <div class="form-group col-md-3">
+                            <label>DX</label>
+                            <select class="form-control" name="dx" id="dx">
+                              <option>Diagnóstico</option>
+                              <option>TB</option>
+                              <option>EZ</option>
+                              <option>DM</option>
+                              <option>CR</option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-5">
+                            <label>Teléfono</label>
+                            <input type="text" class="form-control" name="telefono" id="telefono" placeholder="Teléfono">
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Lugar Residencia</label>
+                            <input type="text" class="form-control" id="lugar_residencia" name="lugar_residencia" placeholder="Lugar residencia">
+                          </div>                          
+                          <div class="form-group col-md-4">
+                            <label>Sexo</label>
+                            <select class="form-control" name="sexo" id="sexo">
+                              <option>Sexo</option>
+                              <option>M</option>
+                              <option>F</option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Edad</label>
+                            <input type="number" class="form-control" name="edad" id="edad" placeholder="Edad">
+                          </div>
+                          
+                          
+                          <div class="form-group col-md-4">
+                            <label>Fecha</label>
+                            <input type="date" class="form-control" name="fecha_hora" id="fecha_hora" placeholder="Fecha">
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Hora</label>
+                            <input type="time" class="form-control" name="update_hora" id="update_hora" placeholder="Hora">
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Día</label>
+                            <input type="text" class="form-control" name="dia" id="dia" placeholder="Día consulta" disabled="disabled">
+                          </div>
+                                                    
+                          <div class="form-group col-md-4">
+                            <label>Psiquiatra</label>
+                            <select class="form-control" name="psiquiatra" id="psiquiatra">
+                              <option>Psiquiatra</option>
+                              <option>Carlos Andres Gomez</option>
+                              <option>Carolina Álvarez Vanegas</option>
+                              <option>Catalina Walker</option>
+                              <option>Diana Gómez</option>
+                              <option>Gladis Rocio</option>
+                              <option>Jaime Alberto Paredes Tamayo</option>
+                              <option>Jaime Paredes</option>
+                              <option>Jhon Jairo Castañeda</option>
+                              <option>Jorge Celis</option>
+                              <option>Jorge Enrique Celis Murillo</option>
+                              <option>Lina García</option>
+                              <option>Mariana Aranda</option>
+                              <option>Mauricio Castaño</option>
+                              <option>Melissa</option>
+                              <option>Migel Angel</option>
+                              <option>Mónica Martínez</option>
+                              <option>Psicologa Monica Liliana Martinez</option>
+                              <option>Ricardo Sarmiento Garcia</option>
+                              <option>Rocio Cubides</option>
+                              <option>Sandra Milena Gomez Montoya</option>
+                              <option>Otro</option>
+                            </select>
+                          </div>
+
+                          <div class="form-group col-md-5">
+                            <label>Observaciones</label>
+                            <textarea class="form-control" name="observaciones" id="observaciones" placeholder="Observaciones"></textarea>
+                          </div>
+                          <div class="form-group col-md-3">
+                             <label>Se llamada al paciente</label>
+                             <br>
+                             <label><input type="checkbox" id="update_llamada" name="update_llamada" value="SI">SI</label>
+                          </div>
+                          <div class="form-group col-md-4" hidden>
+                            <input type="number" class="form-control" id="update_paciente-id" name="update_paciente-id">
+                            <input type="number" class="form-control" id="update_row_id" name="update_row_id">
+                          </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="editar">Actualizar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block extrajs %}
