@@ -98,3 +98,19 @@ def FaltaProgramarCitaUpdate(request):
 			return JsonResponse({'estatus':'ok'})
 		else:
     			return JsonResponse({'estatus':form_cita_update.errors})
+
+def FaltaProgramarCitaDiscard(request):
+	if request.method == 'POST':
+		try:
+			print(request.POST.get('tipo-descarte'))
+			paciente = FaltaProgramarCita.objects.get(id=request.POST.get('id_paciente'))
+			paciente.estado = request.POST.get('tipo-descarte')
+			paciente.observaciones = request.POST.get('descartar-observaciones')
+			paciente.save()
+		except IntegrityError as ie:
+			print(ie.message)
+			return JsonResponse({'estatus':ie.message})
+		except ValueError as ve:
+				print(ve.message)
+				return JsonResponse({'estatus':ve.message})
+	return JsonResponse({'estatus':'ok'})

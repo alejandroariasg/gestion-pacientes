@@ -1,38 +1,43 @@
 $(document).ready(function(){
     var table;
-    table = $('#tabla_falta_programar_cita').DataTable({
-          "createdRow": function( row, data, dataIndex ) {
-            $('td', row).eq(14).attr('id', 'estado_'+dataIndex);
-        },
-        "fnDrawCallback": function( oSettings ) {
-            angedar_paciente();
-            editar_paciente();
-            cambiarDia();
-        },
-        "oLanguage": {
-            "sProcessing":     "Cargando...",
-            "sZeroRecords":    "No se encontraron resultados",
-            "sEmptyTable":     "Ningún dato disponible en esta tabla",
-            "sInfo":           "Mostrando del (_START_ al _END_) de un total de _TOTAL_ registros",
-            "sInfoEmpty":      "Mostrando del 0 al 0 de un total de 0 registros",
-            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix":    "",
-            "sSearch":         "Filtrar:",
-            "sUrl":            "",
-            "sInfoThousands":  ",",
-            "sLoadingRecords": "Por favor espere - cargando...",
-            "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":     "Último",
-                "sNext":     "Siguiente",
-                "sPrevious": "Anterior"
+    listar_citas_consultas_externas();
+    
+    function listar_citas_consultas_externas(){
+        table = $('#tabla_falta_programar_cita').DataTable({
+              "createdRow": function( row, data, dataIndex ) {
+                $('td', row).eq(14).attr('id', 'estado_'+dataIndex);
             },
-            "oAria": {
-                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            "fnDrawCallback": function( oSettings ) {
+                angedar_paciente();
+                editar_paciente();
+                cambiarDia();
+                descartar_paciente();
+            },
+            "oLanguage": {
+                "sProcessing":     "Cargando...",
+                "sZeroRecords":    "No se encontraron resultados",
+                "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                "sInfo":           "Mostrando del (_START_ al _END_) de un total de _TOTAL_ registros",
+                "sInfoEmpty":      "Mostrando del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix":    "",
+                "sSearch":         "Filtrar:",
+                "sUrl":            "",
+                "sInfoThousands":  ",",
+                "sLoadingRecords": "Por favor espere - cargando...",
+                "oPaginate": {
+                    "sFirst":    "Primero",
+                    "sLast":     "Último",
+                    "sNext":     "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
             }
-        }
-    });
+        });
+    }
 
     function angedar_paciente(){
         $('#tabla_falta_programar_cita tbody').on( 'click', '.agendar', function (){
@@ -219,6 +224,107 @@ $(document).ready(function(){
 	                    console.log("Data not found"+result);
 	                  }		
 			    	});
+			  }
+			});
+		}
+  });
+
+  function descartar_paciente(){
+      $('#tabla_falta_programar_cita tbody').on( 'click', '.descartar_paciente', function (){
+          id = this.id;
+          var indexRow = table.row( $(this).closest('tr').index())[0][0];
+          $.ajax({
+            url: "falta_programar_cita_listar_paciente",
+            data: {'id' : id},
+            type: "GET",
+            success: function(data){
+              var data_agenda = jQuery.parseJSON(data['data'])[0]['fields'];
+              $("#descartar-nombre").val(data_agenda.nombre);
+              $("#descartar-prim-apellido").val(data_agenda.primer_apellido);
+              $("#descartar-seg-apellido").val(data_agenda.segundo_apellido);
+              $("#descartar-numero-documento").val(data_agenda.numero_documento);
+              $("#descartar-dx").val(data_agenda.dx);
+              $("#descartar-observaciones").val(data_agenda.observaciones);
+              $("#descartar-edad").val(data_agenda.edad);
+              $("#descartar-index-row").val(indexRow);
+              $("#descartar-id").val(id);
+              
+              $('#modalDescartar').modal('show');  			  	
+            },
+            error: function(result) {
+              alert("Data not found"+result);
+            }		
+          });
+
+      });
+  }
+  $('#descartar').click(function(){
+		var nombre = $("#descartar-nombre").val()+" "+$("#descartar-prim-apellido").val()+" "+$("#descartar-seg-apellido").val();
+		if($("#tipo-descarte").val() == 0){
+			$( "#tipo-descarte" ).focus();
+			Swal.fire(
+		      'Alerta!',
+		      'Por favor seleccione el tipo de descarte!',
+		      'warning'
+		    );		    
+		}else{
+
+			Swal.fire({
+			  title: 'Esta seguro?',
+			  text: "Desea descartar el paciente "+nombre+".?",
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonClass: "btn-success",
+			  confirmButtonText: "Si, descartar",
+			  cancelButtonText: "No, cancelar!",
+			  closeOnConfirm: false,
+			  closeOnCancel: false,
+			  reverseButtons: true
+			}).then((result) => {
+				 if (result.value) {
+				  	var serializedData = $("#form-descartar").serialize()+ "&id_paciente=" + $("#descartar-id").val()+ "&descartar-numero-documento=" + $("#descartar-numero-documento").val();
+					var request;
+					var index_row = $("#descartar-index-row").val();
+					request = $.ajax({
+					  url: "falta_programar_cita_descartar_paciente",
+					  data: serializedData,
+					  type: "POST",
+					  success: function(data){
+					  	if(data != 'error'){
+			    			$("#form-descartar")[0].reset();
+					  		Swal.fire(
+						      'Descartado!',
+						      "Se ha descartado correctamente el paciente "+nombre+".",
+						      'success'
+						    );
+					  		$('#modalDescartar').modal('toggle');
+					  		/*$('#pruebaDataTable').dataTable().fnDestroy();
+			    			listar_citas_consultas_externas();*/
+                //updateRow(index_row, JSON.parse(data).data);
+                //$('#tabla_falta_programar_cita').data.reload();
+                listar_citas_consultas_externas();
+                setTimeout(function(){ 
+                  $('#tabla_falta_programar_cita').dataTable().fnDestroy();
+                }, 1000);
+					  	}else{
+					  		Swal.fire(
+						      'Error!',
+						      'Ha ocurrido un error. Verifique que los campos estén correctamente diligenciados',
+						      'error'
+						    );
+					  	}
+					  	
+					  },
+					  error: function(result) {
+	                    alert("Data not found"+result);
+	                  }		
+			    	});
+			  } else if (result.dismiss === Swal.DismissReason.cancel){
+			    Swal.fire(
+			      'Cancelado',
+			      'Registro cancelado :)',
+			      'error'
+			    )
 			  }
 			});
 		}

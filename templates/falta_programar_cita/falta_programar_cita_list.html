@@ -48,8 +48,16 @@
               <td>
                 <button type='button' class='btn btn-success agendar' id="{{ citas.id }}">Agendar</button>
                 <button type='button' class="btn btn-info editar" id="{{ citas.id }}">Editar</button>
-                <a class="btn btn-danger descartar" id="{{ citas.id }}" href="">Descartar</a>
+                <button type='button' class="btn btn-danger descartar_paciente" id="{{ citas.id }}" >Descartar</button>
               </td>
+            {% elif citas.estado == 2 %}
+            <td style="background-color: #ffc107; text-align: center; font-weight: bold;">
+              <span>Descatado Temporalmente</span style="background-color: aquamarine;">
+            </td>
+            {% elif citas.estado == 3 %}
+            <td style="background-color: #dc6262; text-align: center; font-weight: bold;">
+              <span>Descatado</span style="background-color: aquamarine;">
+            </td>
             {% else %}
             <td style="background-color: aquamarine; text-align: center; font-weight: bold;">
               <span>Agendado</span style="background-color: aquamarine;">
@@ -320,6 +328,89 @@
       <!-- Modal footer -->
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="editar">Actualizar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Modall Descartar Paciente-->
+<div class="modal fade" id="modalDescartar">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Descartar paciente</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <h3>Descartar</h3>
+        <section id="form">
+          <div class="container ">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <div class="row">
+                  <div class="col-md-12">
+                    <form id="form-descartar">
+                        {% csrf_token %}
+                        <div class="form-row">
+                          <div class="form-group col-md-4">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" placeholder="Nombre" id="descartar-nombre" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Primer apellido</label>
+                            <input type="text" class="form-control" id="descartar-prim-apellido" placeholder="Primer Apellido" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Segundo apellido</label>
+                            <input type="text" class="form-control" placeholder="Segundo Apellido" id="descartar-seg-apellido" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Cédula</label>
+                            <input type="text" class="form-control" placeholder="Cédula" id="descartar-numero-documento" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Edad</label>
+                            <input type="text" class="form-control" placeholder="Edad" id="descartar-edad" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>DX</label>
+                            <input type="text" class="form-control" placeholder="DX" id="descartar-dx" disabled>
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label>Tipo Descarte</label>
+                            <select class="form-control" id="tipo-descarte" name="tipo-descarte">
+                              <option value="0">Seleccione...</option>
+                              <option value="2">Descarte definitivo</option>
+                              <option value="3">Descarte temporal</option>
+                            </select>
+                          </div>
+
+                          <div class="form-group col-md-8">
+                            <label>Observaciones - Razón para descartar paciente</label>
+                            <textarea class="form-control" id="descartar-observaciones" name="descartar-observaciones" placeholder="Razón para cancelar..."></textarea>
+                          </div>
+                          </div>                        
+                          <div class="form-group col-md-4" hidden>
+                            <input type="number" class="form-control" id="descartar-id" name="descartar-id">
+                            <input type="number" class="form-control" id="descartar-index-row" name="descartar-index-row">
+                          </div>                        
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="descartar">Descartar</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
       
