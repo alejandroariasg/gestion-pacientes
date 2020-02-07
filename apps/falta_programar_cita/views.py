@@ -23,7 +23,7 @@ def FaltaProgramarCitaCreate(request):
 		if form.is_valid():
 			obj = form.save(commit=True)
 			obj.fecha_creacion = '2020-01-01'
-			obj.fecha_actualizacion = '2020-01-01'
+			obj.fecha_actualizacion = timezone.now()
 			obj.estado = 1
 			return redirect('falta_programar_cita:falta_programar_cita_listar')
 		else:
@@ -81,3 +81,20 @@ def FaltaProgramarCitaAgendar(request):
 			return JsonResponse({'estatus':form.errors})
 
 	return JsonResponse({'estatus':'ok'})
+	
+def FaltaProgramarCitaUpdate(request):
+	if request.method == 'POST':
+		cita = FaltaProgramarCita.objects.get(id=request.POST.get('id'))
+		fecha_creacion = cita.fecha_creacion
+		estado = cita.estado
+		form_cita_update = FaltaProgramarCitaForm(request.POST or None, instance=cita)
+		if form_cita_update.is_valid():
+			obj = form_cita_update.save(commit=True)
+			print(obj.fecha_creacion)
+			obj.fecha_creacion = fecha_creacion
+			obj.fecha_actualizacion = timezone.now()
+			obj.estado = estado
+			obj.save()
+			return JsonResponse({'estatus':'ok'})
+		else:
+    			return JsonResponse({'estatus':form_cita_update.errors})

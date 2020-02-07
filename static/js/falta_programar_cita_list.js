@@ -88,7 +88,6 @@ $(document).ready(function(){
               data: serializedData,
               type: "POST",
               success: function(data){
-                console.log(data.estatus);
                 if(data.estatus == 'ok'){
                     $("#form-angedar")[0].reset();
                     Swal.fire(
@@ -154,6 +153,76 @@ $(document).ready(function(){
 
     });
   }
+
+  $('#editar').click(function(){
+		var nombre = $("#nombre").val()+" "+$("#primer_apellido").val()+" "+$("#segundo_apellido").val();
+
+		if($('#numero_documento').val() == ''){
+			$( "#numero_documento" ).focus();
+			Swal.fire(
+		      'Alerta!',
+		      'Por favor ingresa la cédula del paciente!',
+		      'warning'
+		    );
+		}else if($('#nombre').val() == '' || $('#primer_apellido').val() == '0' || $('#segundo_apellido').val() == '0'){
+			$( "#nombre" ).focus();
+			Swal.fire(
+		      'Alerta!',
+		      'Por favor ingrese correctamente los nombres y apellidos del paciente!',
+		      'warning'
+		    );
+		}else{
+			Swal.fire({
+			  title: 'Esta seguro?',
+			  text: "Desea actualizar los datos el paciente "+nombre+".?",
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonClass: "btn-success",
+			  confirmButtonText: "Si, editar",
+			  cancelButtonText: "No, cancelar!",
+			  closeOnConfirm: false,
+			  closeOnCancel: false,
+			  reverseButtons: true
+			}).then((result) => {
+				if (result.value) {
+				var llamada = $('#update_llamada').prop('checked') ? "SI" : "NO";
+        var serializedData = $("#form-editar").serialize()+ "&id=" + $("#update_paciente-id").val()+ "&dia=" + $("#update_dia").val()+ "&llamada=" + llamada;
+				var request;
+				var index_row = $("#update_row_id").val();
+				request = $.ajax({
+					  url: "falta_programar_cita_actualizar_paciente",
+					  data: serializedData,
+					  type: "POST",
+					  success: function(data){
+					  	if(data.estatus == 'ok'){
+					  		$("#form-editar")[0].reset();
+					  		Swal.fire(
+						      'Datos actualizados!',
+						      "Se han actualizado correctamente los datos del paciente "+nombre+".",
+						      'success'
+						    );
+                $('#myModalUpdate').modal('toggle');
+                location.reload();
+					  		/*$('#pruebaDataTable').dataTable().fnDestroy();
+			    			listar_citas_consultas_externas();*/
+			    			//updateRow(index_row, JSON.parse(data).data);
+					  	}else{
+					  		Swal.fire(
+						      'Error!',
+						      'Ha ocurrido un error. Verifique que los campos estén correctamente diligenciados',
+						      'error'
+						    );
+					  	}
+					  	
+					  },
+					  error: function(result) {
+	                    console.log("Data not found"+result);
+	                  }		
+			    	});
+			  }
+			});
+		}
+	});
 
   function cambiarDia(){
 		$( "#agenda-fecha" ).focusout(function() {
